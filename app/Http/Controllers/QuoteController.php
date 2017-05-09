@@ -39,47 +39,21 @@ class QuoteController extends Controller
     public function create (Request $request)
     {
 
-         $quote  = $request->input ("quote");
-         $author = $request->input ("author");
+        $quote  = $request->input ("quote");
+        $author = $request->input ("author");
 
-         if
-         (
-             ! empty ($quote)
-         &&  ! empty ($author)
-         ) {
+        if (empty ($quote) && empty ($author)
+            return response ()->json (INVALID_PARAMETERS_ERROR);
 
-             $newQuote = new Quote ();
-             $newQuote->quote = $quote;
-             $newQuote->author = $author;
+        $newQuote = new Quote ();
+        $newQuote->quote = $quote;
+        $newQuote->author = $author;
 
-             $newQuote->save();
+        $status = $newQuote->save ()
+             ? "success"
+             : "failed";
 
-             return response()->json(["status" => "success"]);
-
-//             $affected = app ("db")
-//                 ->insert ("INSERT INTO quotes (quote, author) VALUES (?, ?);", [$quote, $author]);
-//
-//             $status = $affected > 0
-//                 ? "success"
-//                 : "failed";
-//
-//             return response ()->json
-//             (
-//                 [
-//                     "QuoteCreation" =>
-//                     [
-//                         "status" => "$status"
-//                     ]
-//                 ]
-//             );
-
-         }
-         else
-         {
-
-             return response ()->json (INVALID_PARAMETERS_ERROR);
-
-         }
+         return response()->json(["status" => $status]);
 
     }
 
