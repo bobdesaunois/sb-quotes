@@ -5,9 +5,17 @@ namespace App\Http\Controllers;
 use App\Quote;
 use Illuminate\Http\Request;
 
+/**
+ * Class QuoteController
+ * @package App\Http\Controllers
+ */
 class QuoteController extends Controller
 {
 
+    /**
+     * @param null $id
+     * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     */
     public function get ($id = null)
     {
 
@@ -17,6 +25,9 @@ class QuoteController extends Controller
         return response (Quote::findOrFail ($id));
     }
 
+    /**
+     * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     */
     public function getAll ()
     {
 
@@ -24,6 +35,10 @@ class QuoteController extends Controller
 
     }
 
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\JsonResponse
+     */
     public function create (Request $request)
     {
 
@@ -45,6 +60,10 @@ class QuoteController extends Controller
 
     }
 
+    /**
+     * @param $id
+     * @return \Illuminate\Http\Response|\Laravel\Lumen\Http\ResponseFactory
+     */
     public function delete ($id)
     {
 
