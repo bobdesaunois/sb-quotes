@@ -12,27 +12,15 @@ class QuoteController extends Controller
     {
 
         if (empty ($id))
-        {
+            return response (Quote::inRandomOrder ()->first ());
 
-            $result = app ("db")
-                ->select ("SELECT * FROM quotes ORDER BY RAND() LIMIT 1");
-
-            return $result;
-
-        }
-
-        $result = app ("db")
-            ->select ("SELECT * FROM quotes WHERE id = ? LIMIT 1;", [$id]);
-
-        return response ($result);
-
+        return response (Quote::findOrFail ($id));
     }
 
     public function getAll ()
     {
 
-        $results = app ("db")->select ("SELECT * FROM quotes;");
-        return response ($results);
+        return response (Quote::all ());
 
     }
 
@@ -42,7 +30,7 @@ class QuoteController extends Controller
         $quote  = $request->input ("quote");
         $author = $request->input ("author");
 
-        if (empty ($quote) && empty ($author)
+        if (empty ($quote) && empty ($author))
             return response ()->json (INVALID_PARAMETERS_ERROR);
 
         $newQuote = new Quote ();
@@ -53,27 +41,20 @@ class QuoteController extends Controller
              ? "success"
              : "failed";
 
-         return response()->json(["status" => $status]);
+         return response ()->json (["status" => $status]);
 
     }
 
     public function delete ($id)
     {
 
-        $result = app ("db")
-            ->delete ("DELETE FROM quotes WHERE id = ? LIMIT 1;", [$id]);
+        $quote = Quote::find ($id);
 
-        $status = $result ? "success" : "failed";
-        
-        return response ()->json
-        (
-            [
-                "QuoteDeletion" =>
-                [
-                    "status" => "$status"
-                ]
-            ]
-        );
+        $status = $quote->delete ()
+            ? "success"
+            : "failed";
+
+        return response (["status" => $status]);
 
     }
 

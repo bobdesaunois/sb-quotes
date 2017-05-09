@@ -19,7 +19,7 @@ $app->get ("/", "IndexController@index");
 /**
  * Gets a quote with the supplied ID, or a random one
  */
-$app->get ("/quote/find/{id}", "QuoteController@get");
+$app->get ("/quote/find[/{id}]", "QuoteController@get");
 
 /**
  * Gets all quotes
