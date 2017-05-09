@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Quote;
 use Illuminate\Http\Request;
 
 class QuoteController extends Controller
@@ -45,25 +46,38 @@ class QuoteController extends Controller
          (
              ! empty ($quote)
          &&  ! empty ($author)
-         )
+         ) {
+
+             $newQuote = new Quote ();
+             $newQuote->quote = $quote;
+             $newQuote->author = $author;
+
+             $newQuote->save();
+
+             return response()->json(["status" => "success"]);
+
+//             $affected = app ("db")
+//                 ->insert ("INSERT INTO quotes (quote, author) VALUES (?, ?);", [$quote, $author]);
+//
+//             $status = $affected > 0
+//                 ? "success"
+//                 : "failed";
+//
+//             return response ()->json
+//             (
+//                 [
+//                     "QuoteCreation" =>
+//                     [
+//                         "status" => "$status"
+//                     ]
+//                 ]
+//             );
+
+         }
+         else
          {
 
-             $affected = app ("db")
-                 ->insert ("INSERT INTO quotes (quote, author) VALUES (?, ?);", [$quote, $author]);
-
-             $status = $affected > 0
-                 ? "success"
-                 : "failed";
-
-             return response ()->json
-             (
-                 [
-                     "QuoteCreation" =>
-                     [
-                         "status" => "$status"
-                     ]
-                 ]
-             );
+             return response ()->json (INVALID_PARAMETERS_ERROR);
 
          }
 
