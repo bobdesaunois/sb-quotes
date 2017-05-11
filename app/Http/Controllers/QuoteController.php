@@ -22,7 +22,13 @@ class QuoteController extends Controller
         if (empty ($id))
             return response (Quote::inRandomOrder ()->first ());
 
-        return response (Quote::findOrFail ($id));
+        $quote = Quote::find ($id);
+
+        if ( ! $quote)
+            return $this->throwError ("QuoteNotFound");
+
+        return response ($quote);
+
     }
 
     /**
@@ -52,11 +58,10 @@ class QuoteController extends Controller
         $newQuote->quote = $quote;
         $newQuote->author = $author;
 
-        $status = $newQuote->save ()
-             ? "success"
-             : "failed";
+        if ( ! $newQuote->save ())
+            return $this->throwError ("CouldNotCreateQuote");
 
-         return response ()->json (["status" => $status]);
+         return response ()->json (["status" => "success"]);
 
     }
 
@@ -69,11 +74,13 @@ class QuoteController extends Controller
 
         $quote = Quote::find ($id);
 
-        $status = $quote->delete ()
-            ? "success"
-            : "failed";
+        if ( ! $quote)
+            return $this->throwError ("CouldNotFindQuote");
 
-        return response (["status" => $status]);
+        if ( ! $quote->delete ())
+            return $this->throwError ("CouldNotDeleteQuote");
+
+        return response (["status" => "success"]);
 
     }
 

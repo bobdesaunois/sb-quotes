@@ -16,10 +16,7 @@ define
     (
         "INVALID_PARAMETERS_ERROR"
     ,   [
-            "error" => [
-                "title" => ""
-            ,   "description" => "Your request has some missing/invalid parameters, please consult the documentation."
-            ]
+            "error" => "InvalidOrMissingParameters"
         ]
     );
 
