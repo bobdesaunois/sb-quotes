@@ -30,7 +30,7 @@ $app->get ("/quote/all", "QuoteController@getAll");
  * Creates a new quote
  * @params: quote, author
  */
-$app->put ("/quote/create", "QuoteController@create");
+$app->post ("/quote/create", "QuoteController@create");
 
 /**
  * Deletes a quote
